@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "baTNMkn6IgQ=",
+  "success": true,
+  "projectFilePath": "C:\\TrainingProjects\\RSSFeedReader\\backend\\RSSFeedReader.Api\\RSSFeedReader.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fcd00\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.18\\microsoft.aspnetcore.openapi.9.0.18.nupkg.sha512",
+    "C:\\Users\\fcd00\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

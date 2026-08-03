@@ -1,0 +1,88 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Forms
+@using RSSFeedReader.UI.Models
+@using RSSFeedReader.UI.Services
+@inject SubscriptionApiService SubscriptionApi
+
+<PageTitle>Subscriptions</PageTitle>
+
+<h1>RSS Feed Reader</h1>
+<p>Add a feed URL to build your subscription list.</p>
+
+<EditForm Model="@model" OnSubmit="HandleSubmit" class="mb-4">
+    <div class="input-group">
+        <InputText class="form-control" @bind-Value="model.FeedUrl" placeholder="https://example.com/feed" />
+        <button class="btn btn-primary" type="submit" disabled="@isSubmitting">Add</button>
+    </div>
+</EditForm>
+
+@if (!string.IsNullOrWhiteSpace(statusMessage))
+{
+    <div class="alert alert-info">@statusMessage</div>
+}
+
+@if (subscriptions is null)
+{
+    <p>Loading subscriptions...</p>
+}
+else if (subscriptions.Count == 0)
+{
+    <p>No subscriptions yet.</p>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var subscription in subscriptions)
+        {
+            <li class="list-group-item">@subscription.FeedUrl</li>
+        }
+    </ul>
+}
+
+@code {
+    private readonly SubscriptionFormModel model = new();
+    private List<Subscription> subscriptions = [];
+    private bool isSubmitting;
+    private string? statusMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSubscriptionsAsync();
+    }
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        statusMessage = null;
+
+        try
+        {
+            var addedSubscription = await SubscriptionApi.AddSubscriptionAsync(model.FeedUrl);
+
+            if (addedSubscription is null)
+            {
+                statusMessage = "Please enter a valid, unique feed URL.";
+            }
+            else
+            {
+                model.FeedUrl = string.Empty;
+                await LoadSubscriptionsAsync();
+                statusMessage = "Subscription added.";
+            }
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private async Task LoadSubscriptionsAsync()
+    {
+        subscriptions = (await SubscriptionApi.GetSubscriptionsAsync()).ToList();
+    }
+
+    private sealed class SubscriptionFormModel
+    {
+        public string FeedUrl { get; set; } = string.Empty;
+    }
+}
