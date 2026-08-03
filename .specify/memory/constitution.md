@@ -1,50 +1,69 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# RSS Feed Reader Constitution
+
+<!--
+Sync Impact Report
+- Version change: 0.0.0 -> 1.0.0
+- Modified principles: none; created a project-specific constitution
+- Added sections: Security Requirements, Development Workflow
+- Removed sections: none
+- Follow-up TODOs: none
+-->
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Security by Default
+All changes MUST avoid introducing insecure defaults, expose no secrets in source control,
+and treat external input as untrusted. For this project, that means feed URLs and any
+future network data MUST be handled carefully, configuration values such as API URLs
+and CORS origins MUST be explicit, and credentials MUST never be hard-coded.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. MVP-First, Maintainable Design
+The application MUST be implemented in the smallest slice that satisfies the current MVP:
+add a subscription and display the list. New code MUST remain easy to extend for the
+planned Extended-MVP without introducing architectural debt, and features not required
+for the MVP MUST be deferred rather than partially implemented.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Clear Contracts and Readable Code
+Backend API endpoints, UI components, and shared models MUST use clear names and
+explicit contracts. Code MUST favor straightforward C# and Blazor patterns over clever
+shortcuts, and duplicated logic MUST be consolidated to keep the implementation
+maintainable.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Quality Through Verification
+Every change MUST be verified before completion. For this project, the minimum
+verification bar is a successful build, a working run of the app, and confirmation that
+the subscription flow still works end to end. Configuration changes affecting ports,
+routing, or CORS MUST be validated before the work is considered complete.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Incremental Delivery for Future Growth
+The architecture MUST remain compatible with the stated roadmap: in-memory MVP first,
+then feed fetching, then persistence and background processing. The chosen ASP.NET Core
+Web API and Blazor WebAssembly stack MUST be used in a way that supports future
+enhancements without a rewrite.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Project Constraints
+The application MUST follow the MVP scope defined in the stakeholder documents:
+- The backend and frontend MUST be kept simple for the initial release.
+- In-memory storage MAY be used for subscriptions during the MVP.
+- Feed fetching, parsing, validation, and persistence are deferred until the
+  Extended-MVP phase.
+- Any future work that adds network access or persistence MUST introduce explicit error
+  handling and a clear storage abstraction.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Development Workflow
+All implementation work MUST follow these rules:
+1. Keep the user experience focused on the MVP: add a subscription and see it in the
+   list.
+2. Keep backend and frontend responsibilities separated so changes remain easy to reason
+   about.
+3. Validate routing, configuration, and API connectivity before moving on to additional
+   UI work.
+4. Review changes for security, maintainability, and clarity before they are merged.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+This constitution supersedes ad hoc shortcuts and informal implementation decisions. Any
+amendment MUST document the reason for the change, update this file, and explain how
+the change affects project delivery. Compliance is reviewed during implementation
+milestones and pull requests; deviations MUST be explicitly justified and remediated.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-08-03 | **Last Amended**: 2026-08-03
